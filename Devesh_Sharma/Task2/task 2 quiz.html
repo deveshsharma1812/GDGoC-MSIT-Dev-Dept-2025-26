@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Generations Quiz</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f6fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .quiz-container {
+    background: white;
+    width: 400px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  h2 {
+    color: #333;
+  }
+  .option {
+    background: #e3e7ed;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .option:hover {
+    background: #cfe0ff;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  #score-container {
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="quiz">
+      <h2 id="question">Question text</h2>
+      <div id="options"></div>
+      <button id="next-btn">Next</button>
+    </div>
+    <div id="score-container">
+      <h2>Your Score:</h2>
+      <p id="score"></p>
+      <button onclick="restartQuiz()">Restart</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: '1. The first generation of computers used which technology?',
+        options: ['Transistors', 'Vacuum Tubes', 'Integrated Circuits', 'Microprocessors'],
+        correct: 1
+      },
+      {
+        question: '2. Transistors were used in which generation of computers?',
+        options: ['First', 'Second', 'Third', 'Fourth'],
+        correct: 1
+      },
+      {
+        question: '3. Integrated Circuits (ICs) were used in which generation?',
+        options: ['Second', 'Third', 'Fourth', 'Fifth'],
+        correct: 1
+      },
+      {
+        question: '4. Microprocessors were introduced in which generation?',
+        options: ['Third', 'Fourth', 'Fifth', 'Sixth'],
+        correct: 1
+      },
+      {
+        question: '5. The fifth generation of computers is based on?',
+        options: ['Artificial Intelligence', 'Vacuum Tubes', 'Transistors', 'Microprocessors'],
+        correct: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const nextBtn = document.getElementById('next-btn');
+    const quiz = document.getElementById('quiz');
+    const scoreContainer = document.getElementById('score-container');
+    const scoreEl = document.getElementById('score');
+
+    function loadQuestion() {
+      const current = quizData[currentQuestion];
+      questionEl.textContent = current.question;
+      optionsEl.innerHTML = '';
+      current.options.forEach((option, index) => {
+        const div = document.createElement('div');
+        div.textContent = option;
+        div.classList.add('option');
+        div.onclick = () => selectAnswer(index);
+        optionsEl.appendChild(div);
+      });
+    }
+
+    function selectAnswer(index) {
+      const correct = quizData[currentQuestion].correct;
+      if (index === correct) {
+        score++;
+      }
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showScore();
+      }
+    }
+
+    function showScore() {
+      quiz.style.display = 'none';
+      scoreContainer.style.display = 'block';
+      scoreEl.textContent = `${score} / ${quizData.length}`;
+    }
+
+    function restartQuiz() {
+      score = 0;
+      currentQuestion = 0;
+      quiz.style.display = 'block';
+      scoreContainer.style.display = 'none';
+      loadQuestion();
+    }
+
+    nextBtn.onclick = nextQuestion;
+
+    loadQuestion();
+  </script>
+</body>
+</html>
